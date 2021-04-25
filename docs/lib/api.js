@@ -1,12 +1,7 @@
-const API_URL = "https://dev-next-test.pantheonsite.io/graphql"
+const API_URL = "https://www.nerddeals.io/graphql"
 
 async function fetchAPI(query, { variables } = {}) {
   const headers = { 'Content-Type': 'application/json' }
-
-    headers[
-      'Authorization'
-    ] = `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvZGV2LW5leHQtdGVzdC5wYW50aGVvbnNpdGUuaW8iLCJpYXQiOjE2MTg1NDAwODgsIm5iZiI6MTYxODU0MDA4OCwiZXhwIjoxNjUwMDc2MDg4LCJkYXRhIjp7InVzZXIiOnsiaWQiOiIxIiwidXNlcl9zZWNyZXQiOiJncmFwaHFsX2p3dF82MDc4ZjYzOGQ1NTM2In19fQ.atguYgLJqS5Jcu08mJdhKP3IQEWFMXqZJtpmUgC49dk`
-
   const res = await fetch(API_URL, {
     method: 'POST',
     headers,
@@ -43,17 +38,32 @@ export async function getPreviewPost(id, idType = 'DATABASE_ID') {
 
 export async function getAllPostsWithSlug() {
   const data = await fetchAPI(`
-    {
-      posts(first: 10000) {
-        edges {
-          node {
-            slug
-          }
+  fragment DealData on Deal {
+    deal_content {
+      affiliateLink
+      dealSource
+      details
+      originalPrice
+      salePercent
+      salePrice
+      title
+      featuredImage {
+        sourceUrl
+      }
+    }
+  }
+   query Deals  {
+    deals(first: 10000) {
+      edges {
+        node {
+          ...DealData
+          slug
         }
       }
     }
+  }
   `)
-  return data?.posts
+  return data?.deals
 }
 
 export async function getAllPostsForHome(preview) {
@@ -122,63 +132,10 @@ export async function getPostAndMorePosts(slug, preview, previewData) {
       excerpt
       slug
       date
-      featuredImage {
-        node {
-          sourceUrl
-        }
-      }
-      author {
-        node {
-          ...AuthorFields
-        }
-      }
-      categories {
-        edges {
-          node {
-            name
-          }
-        }
-      }
-      tags {
-        edges {
-          node {
-            name
-          }
-        }
-      }
     }
     query PostBySlug($id: ID!, $idType: PostIdType!) {
-      post(id: $id, idType: $idType) {
+      deal(id: $id, idType: $idType) {
         ...PostFields
-        content
-        ${
-          // Only some of the fields of a revision are considered as there are some inconsistencies
-          isRevision
-            ? `
-        revisions(first: 1, where: { orderby: { field: MODIFIED, order: DESC } }) {
-          edges {
-            node {
-              title
-              excerpt
-              content
-              author {
-                node {
-                  ...AuthorFields
-                }
-              }
-            }
-          }
-        }
-        `
-            : ''
-        }
-      }
-      posts(first: 3, where: { orderby: { field: DATE, order: DESC } }) {
-        edges {
-          node {
-            ...PostFields
-          }
-        }
       }
     }
   `,

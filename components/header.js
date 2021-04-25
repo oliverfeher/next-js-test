@@ -1,12 +1,11 @@
-import Link from 'next/link'
+import Link from 'next/link';
+import Image from 'next/image'
 
 export default function Header() {
   return (
-    <h2 className="text-2xl md:text-4xl font-bold tracking-tight md:tracking-tighter leading-tight mb-20 mt-8">
-      <Link href="/">
-        <a className="hover:underline">Blog</a>
-      </Link>
-      .
-    </h2>
+    <header>
+      <a href="/" className="logo-container"><Image alt="site-logo" width="64" height="64" className="nerddeals_logo" src='/nerddeals_logo.png'/></a>
+      <p className="logo-title">the tech deals universe</p>
+    </header>
   )
 }

@@ -1,0 +1,45 @@
+header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-family: Anton;
+    letter-spacing: 1px;
+    width: 100%;
+}
+
+.navigation {
+    display: flex;
+    padding: 0;
+    margin: 0;
+    align-self: flex-end;
+}
+
+.navigation > li {
+    list-style-type: none;
+    padding: 0.5rem 1rem;
+    border: solid 1px black;
+    margin: 0 1rem;
+    background-color: white;
+}
+
+.navigation > li:hover {
+    color: #BA3535;
+    cursor: pointer;
+}
+
+.logo-container {
+    margin-right: 2rem;
+}
+.nerddeals_logo {
+    width: 6rem;
+}
+
+@media(max-width: 1000px) {
+  .nerddeals_logo {
+      width: 10rem;
+  }
+
+  .logo-title {
+      font-size: 2rem;
+  }
+}

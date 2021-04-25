@@ -102,3 +102,12 @@
 .wp-block-media-text {
   @apply grid grid-cols-2 gap-4;
 }
+
+.cards-container {
+  display: grid;
+  width: 100%;
+  grid-gap: 1rem;
+  margin-top: 5rem;
+  padding: 0 1rem;
+  grid-template-columns: repeat(4, 1fr);
+}

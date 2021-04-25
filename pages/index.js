@@ -4,41 +4,32 @@ import MoreStories from '../components/more-stories'
 import HeroPost from '../components/hero-post'
 import Intro from '../components/intro'
 import Layout from '../components/layout'
-import { getAllPostsForHome } from '../lib/api'
-import { CMS_NAME } from '../lib/constants'
+import { getAllPostsForHome } from '../docs/lib/api'
+import { CMS_NAME } from '../docs/lib/constants'
+import { getAllPostsWithSlug, getPostAndMorePosts } from '../docs/lib/api'
+import Deal from '../components/deal'
 
-export default function Index({ allPosts: { edges }, preview }) {
+export default function Index({ allDeals: { edges }, preview }) {
   const heroPost = edges[0]?.node
   const morePosts = edges.slice(1)
 
+  console.log(edges)
   return (
     <>
       <Layout preview={preview}>
-        <Head>
-          <title>Next.js Blog Example with {CMS_NAME}</title>
-        </Head>
-        <Container>
-          <Intro />
-          {heroPost && (
-            <HeroPost
-              title={heroPost.title}
-              coverImage={heroPost.featuredImage?.node}
-              date={heroPost.date}
-              author={heroPost.author?.node}
-              slug={heroPost.slug}
-              excerpt={heroPost.excerpt}
-            />
-          )}
-          {morePosts.length > 0 && <MoreStories posts={morePosts} />}
-        </Container>
+        <div className="cards-container">
+          {edges.map((deal, idx) => {
+            return <Deal dealData={deal.node.deal_content} key={idx}/>
+          })}
+        </div>
       </Layout>
     </>
   )
 }
 
 export async function getStaticProps({ preview = false }) {
-  const allPosts = await getAllPostsForHome(preview)
+  const allDeals = await getAllPostsWithSlug()
   return {
-    props: { allPosts, preview },
+    props: { allDeals, preview },
   }
 }
