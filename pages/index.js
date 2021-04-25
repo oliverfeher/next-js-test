@@ -31,5 +31,6 @@ export async function getStaticProps({ preview = false }) {
   const allDeals = await getAllPostsWithSlug()
   return {
     props: { allDeals, preview },
+    revalidate: 1,
   }
 }
