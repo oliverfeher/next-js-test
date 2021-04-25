@@ -5,7 +5,7 @@ import Meta from '../components/meta'
 export default function Layout({ preview, children }) {
   return (
     <div className="layout">
-      <Meta />
+      {/* <Meta /> */}
       <Header/>
       <div className="min-h-screen">
         <main>{children}</main>
